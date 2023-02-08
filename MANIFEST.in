@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include pspl_manufacturing *.css
+recursive-include pspl_manufacturing *.csv
+recursive-include pspl_manufacturing *.html
+recursive-include pspl_manufacturing *.ico
+recursive-include pspl_manufacturing *.js
+recursive-include pspl_manufacturing *.json
+recursive-include pspl_manufacturing *.md
+recursive-include pspl_manufacturing *.png
+recursive-include pspl_manufacturing *.py
+recursive-include pspl_manufacturing *.svg
+recursive-include pspl_manufacturing *.txt
+recursive-exclude pspl_manufacturing *.pyc
