@@ -35,6 +35,13 @@ def get_exploded_items(bom_record, docname, data, flag, bom_level_test):
 			group_by='item_code'
 		)
 	for i in test:
+		i.last_purchase_rate = frappe.db.get_value('Item', i.item_code, 'last_purchase_rate')
+		i.min_order_qty = frappe.db.get_value('Item', i.item_code, 'min_order_qty')
+		i.lead_time_days = frappe.db.get_value('Item', i.item_code, 'lead_time_days')
+		i.safety_stock = frappe.db.get_value('Item', i.item_code, 'safety_stock')
+		i.item_group = frappe.db.get_value('Item', i.item_code, 'item_group')
+		i.method_of_procurement = frappe.db.get_value('Item', i.item_code, 'method_of_procurement')
+		i.manufacturing_cost_c = frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c')
 		data.append(i)
 		if i.bom_no:
 			get_exploded_items(i.bom_no, docname, data, flag = 0, bom_level_test = i.bom_level)
@@ -55,4 +62,12 @@ def get_columns():
 		{"label": "BOM Level", "fieldtype": "Int", "fieldname": "bom_level", "width": 100},
 		# {"label": "Standard Description", "fieldtype": "data", "fieldname": "description", "width": 150},
 		# {"label": "Scrap", "fieldtype": "data", "fieldname": "scrap", "width": 100},
+		#added from Item Master
+		{"label": "Last Purchase Rate", "fieldtype": "Float", "fieldname": "last_purchase_rate", "width": 100},
+		{"label": "Minimum Order Qty", "fieldtype": "Int", "fieldname": "min_order_qty", "width": 100},
+		{"label": "Lead Time in days", "fieldtype": "Int", "fieldname": "lead_time_days", "width": 100},
+		{"label": "Safety Stock", "fieldtype": "Float", "fieldname": "safety_stock", "width": 100},
+		{"label": "Item Group", "fieldtype": "Link", "options": "Item Group", "fieldname": "item_group", "width": 100},
+		{"label": "MOP", "fieldtype": "Data", "fieldname": "method_of_procurement", "width": 100},
+		{"label": "Manufacturing Cost", "fieldtype": "Float", "fieldname": "manufacturing_cost_c", "width": 100},
 	]
