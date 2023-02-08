@@ -1,0 +1,90 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2023-02-05 13:02:50.320911",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "item_code",
+  "item_name",
+  "indent",
+  "bom_level",
+  "bom_no",
+  "qty",
+  "rate",
+  "update",
+  "parent_bom"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "columns": 3,
+   "fieldname": "bom_no",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "BOM",
+   "options": "BOM"
+  },
+  {
+   "columns": 1,
+   "fieldname": "qty",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Qty"
+  },
+  {
+   "fieldname": "rate",
+   "fieldtype": "Float",
+   "label": "Rate"
+  },
+  {
+   "fieldname": "item_name",
+   "fieldtype": "Data",
+   "label": "Item Name"
+  },
+  {
+   "columns": 1,
+   "fieldname": "bom_level",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "BOM Level"
+  },
+  {
+   "columns": 1,
+   "fieldname": "update",
+   "fieldtype": "Button",
+   "in_list_view": 1,
+   "label": "Update"
+  },
+  {
+   "fieldname": "parent_bom",
+   "fieldtype": "Link",
+   "label": "Parent BOM",
+   "options": "BOM"
+  },
+  {
+   "fieldname": "indent",
+   "fieldtype": "Int",
+   "label": "Indent"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2023-02-08 15:09:54.993495",
+ "modified_by": "Administrator",
+ "module": "PSPL Manufacturing",
+ "name": "BOM Record Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC"
+}
