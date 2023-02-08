@@ -85,13 +85,14 @@ def get_items_based_on_new_bom(bom, doc, indent, index, call, temp, qty=1):
 	exploded_items = frappe.get_list(
 		"BOM Item",
 		{"parent": bom},
-		["qty", "bom_no", "item_code"],
+		["qty", "bom_no","item_name","item_code"],
 	)
 	for item in exploded_items:
 		index = index + 1
 		temp.append(
 			{
 				"item_code": item.item_code,
+				"item_name": item.item_name,
 				"bom_no": item.bom_no,
 				"indent": indent,
 				"bom_level": indent,
