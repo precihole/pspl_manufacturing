@@ -95,7 +95,8 @@ def get_items_based_on_new_bom(bom, doc, indent, index, call, temp, qty=1):
 				"bom_no": item.bom_no,
 				"bom_level": indent,
 				"qty": item.qty * qty,
-				"idx" : index
+				"idx" : index,
+				"parent_bom": bom
 			}
 		)
 		if item.bom_no:
