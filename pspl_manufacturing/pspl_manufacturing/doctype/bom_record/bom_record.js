@@ -11,6 +11,12 @@ frappe.ui.form.on('BOM Record', {
                 ]
             }
         }
+        frm.add_custom_button(__('PSPL BOM Explorer'), function() {
+            frappe.route_options = {
+                "bom_record":frm.doc.name
+            };
+            frappe.set_route("query-report", "PSPL BOM Explorer");
+        });
 	}
 });
 frappe.ui.form.on('BOM Record Item', {
