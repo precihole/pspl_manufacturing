@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "PSPL-BOM-.####",
  "creation": "2023-02-05 13:04:52.051326",
  "doctype": "DocType",
  "editable_grid": 1,
@@ -52,7 +53,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2023-02-08 13:52:03.300877",
+ "modified": "2023-02-08 16:23:37.059345",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "BOM Record",
