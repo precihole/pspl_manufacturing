@@ -40,6 +40,7 @@ def get_exploded_items(bom_record, docname, data, flag, bom_level_test):
 		i.min_order_qty = frappe.db.get_value('Item', i.item_code, 'min_order_qty')
 		i.lead_time_days = frappe.db.get_value('Item', i.item_code, 'lead_time_days')
 		i.safety_stock = frappe.db.get_value('Item', i.item_code, 'safety_stock')
+		i.uom = frappe.db.get_value('Item', i.item_code, 'stock_uom')
 		i.item_group = frappe.db.get_value('Item', i.item_code, 'item_group')
 		i.method_of_procurement = frappe.db.get_value('Item', i.item_code, 'method_of_procurement')
 		i.manufacturing_cost_c = frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c')
