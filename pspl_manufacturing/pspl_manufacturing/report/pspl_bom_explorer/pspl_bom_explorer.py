@@ -16,6 +16,7 @@ def get_data(filters, data):
 
 
 def get_exploded_items(bom_record, docname, data, flag, bom_level_test):
+	test_tr = []
 	if flag == 1:
 		bom = frappe.db.get_value('BOM Record', bom_record, 'bom')
 		test = frappe.get_all(
@@ -42,9 +43,34 @@ def get_exploded_items(bom_record, docname, data, flag, bom_level_test):
 		i.item_group = frappe.db.get_value('Item', i.item_code, 'item_group')
 		i.method_of_procurement = frappe.db.get_value('Item', i.item_code, 'method_of_procurement')
 		i.manufacturing_cost_c = frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c')
+		i.suppliers = fetch_all_supplier(i.item_code)
 		data.append(i)
 		if i.bom_no:
 			get_exploded_items(i.bom_no, docname, data, flag = 0, bom_level_test = i.bom_level)
+
+def fetch_all_supplier(item_code):
+	#unique supplier
+	all_supplier = []
+	unique_supplier = []
+	supplier_string = ""
+	purchase_orders = frappe.db.get_list('Purchase Order Item',
+		{
+			'item_code': item_code,
+			'docstatus': 1
+		},
+		['parent'],
+		group_by= 'parent'
+	)
+	for po in purchase_orders:
+		supplier = frappe.db.get_value('Purchase Order',po.parent,'supplier')
+		all_supplier.append(supplier)
+	#remove duplicate supplier
+	for ven in all_supplier:
+		if ven not in unique_supplier:
+			unique_supplier.append(ven)
+	#convert array to string
+	supplier_string = ','.join(unique_supplier)
+	return supplier_string
 
 def get_columns():
 	return [
@@ -70,4 +96,5 @@ def get_columns():
 		{"label": "Item Group", "fieldtype": "Link", "options": "Item Group", "fieldname": "item_group", "width": 100},
 		{"label": "MOP", "fieldtype": "Data", "fieldname": "method_of_procurement", "width": 100},
 		{"label": "Manufacturing Cost", "fieldtype": "Float", "fieldname": "manufacturing_cost_c", "width": 100},
+		{"label": "All Supplier", "fieldtype": "HTML Editor", "fieldname": "suppliers", "width": 100},
 	]
