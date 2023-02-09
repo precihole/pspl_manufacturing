@@ -89,12 +89,13 @@ def get_columns():
 		# {"label": "Standard Description", "fieldtype": "data", "fieldname": "description", "width": 150},
 		# {"label": "Scrap", "fieldtype": "data", "fieldname": "scrap", "width": 100},
 		#added from Item Master
+		{"label": "UOM", "fieldtype": "Link", "options": "UOM", "fieldname": "uom", "width": 100},
 		{"label": "Last Purchase Rate", "fieldtype": "Float", "fieldname": "last_purchase_rate", "width": 100},
-		{"label": "Minimum Order Qty", "fieldtype": "Int", "fieldname": "min_order_qty", "width": 100},
+		{"label": "MOQ", "fieldtype": "Int", "fieldname": "min_order_qty", "width": 100},
 		{"label": "Lead Time in days", "fieldtype": "Int", "fieldname": "lead_time_days", "width": 100},
 		{"label": "Safety Stock", "fieldtype": "Float", "fieldname": "safety_stock", "width": 100},
 		{"label": "Item Group", "fieldtype": "Link", "options": "Item Group", "fieldname": "item_group", "width": 100},
 		{"label": "MOP", "fieldtype": "Data", "fieldname": "method_of_procurement", "width": 100},
 		{"label": "Manufacturing Cost", "fieldtype": "Float", "fieldname": "manufacturing_cost_c", "width": 100},
-		{"label": "All Supplier", "fieldtype": "HTML Editor", "fieldname": "suppliers", "width": 100},
+		{"label": "Suppliers", "fieldtype": "HTML Editor", "fieldname": "suppliers", "width": 100},
 	]
