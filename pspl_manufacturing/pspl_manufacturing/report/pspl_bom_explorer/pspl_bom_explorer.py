@@ -55,11 +55,11 @@ def get_exploded_items(bom, parent, data, flag, bom_level):
 		i.suppliers = fetch_all_supplier(i.item_code)
 		if frappe.db.get_value("Has Role",{"role":'Purchase Manager', 'parent':frappe.session.user}, 'role') == 'Purchase Manager':
 			if i.bom_no and (i.item_group == "Manufactured Components" and i.method_of_procurement == 'Manufacture'):
-				i.costing = calculate_bom_cost(parent, i.bom_no)
-				#i.costing = round(costing * i.qty, 2)
+				costing = calculate_bom_cost(parent, i.bom_no)
+				i.costing = round(costing * i.qty, 2)
 			elif i.bom_no and i.item_group == "Sub-assembly":
-				i.costing = calculate_bom_cost(parent, i.bom_no)
-				#i.costing = round(costing * i.qty, 2)
+				costing = calculate_bom_cost(parent, i.bom_no)
+				i.costing = round(costing * i.qty, 2)
 			else:
 				if frappe.db.get_value('Item', i.item_code, 'method_of_procurement') == 'Manufacture':
 					i.costing = round(frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c') * i.qty, 2)
@@ -121,11 +121,11 @@ def calculate_bom_cost(parent, parent_bom):
 			
 			if frappe.db.get_value('Item', row.item_code, 'method_of_procurement') == 'Manufacture':
 				rm_cost = frappe.db.get_value('Item', row.item_code, 'manufacturing_cost_c')
-				#rm_cost = round(rm_cost * row.qty, 2)
+				rm_cost = round(rm_cost * row.qty, 2)
 				cost = cost + rm_cost
 			else:
 				rm_cost = frappe.db.get_value('Item', row.item_code, 'last_purchase_rate')
-				#rm_cost = round(rm_cost * row.qty, 2)
+				rm_cost = round(rm_cost * row.qty, 2)
 				cost = cost + rm_cost
 		else:
 			if frappe.db.get_value('Item', row.item_code, 'method_of_procurement') == 'Manufacture':

@@ -28,7 +28,7 @@ def get_exploded_items(bom, doc, indent=0, qty=1):
 			}
 		)
 		if item.bom_no:
-			get_exploded_items(item.bom_no, doc, indent=indent + 1, qty=item.qty * qty)
+			get_exploded_items(item.bom_no, doc, indent=indent + 1, qty=1)
 
 @frappe.whitelist()
 def chk_bom_change_status():
