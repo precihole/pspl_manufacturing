@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Precihole Sports Black Logo",
- "modified": "2023-02-16 11:31:47.919385",
+ "modified": "2023-02-16 13:57:14.007757",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "PSPL BOM Explorer",
@@ -38,6 +38,12 @@
   },
   {
    "role": "PSPL - Design Supervisor"
+  },
+  {
+   "role": "Purchase Manager"
+  },
+  {
+   "role": "Purchase User"
   },
   {
    "role": "System Manager"
