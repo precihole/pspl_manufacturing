@@ -8,11 +8,12 @@ class BOMRecord(Document):
 	def before_insert(doc):
 		get_exploded_items(doc.bom, doc)
 
-def get_exploded_items(bom, doc,indent=0, qty=1):
+def get_exploded_items(bom, doc, indent=0, qty=1):
 	exploded_items = frappe.get_list(
 		"BOM Item",
 		{"parent": bom},
-		["qty", "bom_no","item_name","item_code"],
+		["qty", "bom_no", "item_name", "item_code"],
+		order_by = 'idx asc',
 	)
 	for item in exploded_items:
 		doc.append('items',
@@ -27,7 +28,7 @@ def get_exploded_items(bom, doc,indent=0, qty=1):
 			}
 		)
 		if item.bom_no:
-			get_exploded_items(item.bom_no, doc, indent=indent + 1, qty=item.qty)
+			get_exploded_items(item.bom_no, doc, indent=indent + 1, qty=item.qty * qty)
 
 @frappe.whitelist()
 def chk_bom_change_status():
@@ -37,6 +38,9 @@ def chk_bom_change_status():
 	#checking if both bom_no is same as after change of bom
 	if bom_no == frappe.form_dict.bom_no:
 		frappe.msgprint(frappe.form_dict.bom_no +' is same as ' + frappe.form_dict.bom_no)
+		return False
+	elif frappe.form_dict.bom_no == '':
+		frappe.msgprint('BOM should not empty')
 		return False
 	elif not bom_no == frappe.form_dict.bom_no:
 		#updating item bom with change bom

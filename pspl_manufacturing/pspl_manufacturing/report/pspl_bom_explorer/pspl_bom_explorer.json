@@ -1,5 +1,5 @@
 {
- "add_total_row": 0,
+ "add_total_row": 1,
  "columns": [],
  "creation": "2023-02-08 14:59:10.661187",
  "disable_prepared_report": 0,
@@ -10,7 +10,7 @@
  "idx": 0,
  "is_standard": "Yes",
  "letter_head": "Precihole Sports Black Logo",
- "modified": "2023-02-08 14:59:10.661187",
+ "modified": "2023-02-16 11:31:47.919385",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "PSPL BOM Explorer",

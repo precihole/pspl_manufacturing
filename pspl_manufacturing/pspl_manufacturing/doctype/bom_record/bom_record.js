@@ -11,12 +11,14 @@ frappe.ui.form.on('BOM Record', {
                 ]
             }
         }
-        frm.add_custom_button(__('PSPL BOM Explorer'), function() {
-            frappe.route_options = {
-                "bom_record":frm.doc.name
-            };
-            frappe.set_route("query-report", "PSPL BOM Explorer");
-        });
+        if(!frm.doc.__islocal){
+            frm.add_custom_button(__('PSPL BOM Explorer'), function() {
+                frappe.route_options = {
+                    "bom_record":frm.doc.name
+                };
+                frappe.set_route("query-report", "PSPL BOM Explorer");
+            });
+        }
 	}
 });
 frappe.ui.form.on('BOM Record Item', {
@@ -38,7 +40,7 @@ frappe.ui.form.on('BOM Record Item', {
             }
         })
 
-                //if true then deleting items via API
+        //if true then deleting items via API
         if(delete_items_flag == true){
             frappe.call({
                 async:false,

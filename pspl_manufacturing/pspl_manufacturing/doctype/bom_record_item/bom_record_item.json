@@ -10,11 +10,14 @@
   "item_name",
   "indent",
   "bom_level",
-  "bom_no",
   "qty",
   "rate",
-  "update",
-  "parent_bom"
+  "parent_bom",
+  "cost",
+  "section_break_8",
+  "bom_no",
+  "column_break_10",
+  "update"
  ],
  "fields": [
   {
@@ -26,7 +29,7 @@
    "options": "Item"
   },
   {
-   "columns": 3,
+   "columns": 2,
    "fieldname": "bom_no",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -38,24 +41,28 @@
    "fieldname": "qty",
    "fieldtype": "Float",
    "in_list_view": 1,
-   "label": "Qty"
+   "label": "Qty",
+   "read_only": 1
   },
   {
    "fieldname": "rate",
    "fieldtype": "Float",
-   "label": "Rate"
+   "label": "Rate",
+   "read_only": 1
   },
   {
    "fieldname": "item_name",
    "fieldtype": "Data",
-   "label": "Item Name"
+   "label": "Item Name",
+   "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "bom_level",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "BOM Level"
+   "label": "BOM Level",
+   "read_only": 1
   },
   {
    "columns": 1,
@@ -73,13 +80,27 @@
   {
    "fieldname": "indent",
    "fieldtype": "Int",
-   "label": "Indent"
+   "label": "Indent",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_10",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cost",
+   "fieldtype": "Float",
+   "label": "cost"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-08 15:09:54.993495",
+ "modified": "2023-02-16 12:36:15.292344",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "BOM Record Item",

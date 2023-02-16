@@ -26,7 +26,7 @@ def get_all_rol_bom_items(rol_bom, data):
 	)
 	for rows in rol_bom_items:
 		#1 if bom level 0 then get the current stock from bin
-		if bom_level == 0:
+		if bom_level == '0':
 			is_group = frappe.db.get_value("Warehouse",{"name": rows.warehouse},["is_group"])
 			if is_group == 1:
 				group_warehouse_list = frappe.get_all("Warehouse",
@@ -59,7 +59,7 @@ def get_all_rol_bom_items(rol_bom, data):
 			data.append(rows)
 		#2 if bom level 1 then get first level items and 
 		# get the current stock of those items from bin
-		elif bom_level == 1:
+		elif bom_level == '1':
 			exploded_items = frappe.get_all(
 				"BOM Item",
 				{"parent": rows.bom},
@@ -72,12 +72,12 @@ def get_all_rol_bom_items(rol_bom, data):
 				rm.qty = rm.qty * rows.req_qty
 				#temporary append to temp[]
 				temp.append(rm)
-		elif bom_level == 2:
+		elif bom_level == '2':
 			#get exploded items
 			temp = get_exploded_items(rows.bom, temp, rows.warehouse, qty=rows.req_qty)
 
 	#run if all item push in temp from bom for bom level 1 and 2
-	if bom_level == 1:
+	if bom_level == '1':
 		#get unique item code by passing temp[]
 		temp = group_by_item_code_and_sum_qty(temp)
 		for item in temp:
@@ -112,7 +112,7 @@ def get_all_rol_bom_items(rol_bom, data):
 			data.append(item)
 	#writing this code again because we are getting 
 	# result in dict than the syntax is change
-	elif bom_level == 2:
+	elif bom_level == '2':
 		temp = group_by_item_code_and_sum_qty(temp)
 		for item in temp:
 			is_group = frappe.db.get_value("Warehouse",{"name": item['warehouse']},["is_group"])

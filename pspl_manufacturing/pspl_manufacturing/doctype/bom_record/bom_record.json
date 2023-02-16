@@ -17,17 +17,22 @@
   {
    "fieldname": "bom",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "BOM",
-   "options": "BOM"
+   "options": "BOM",
+   "reqd": 1
   },
   {
+   "depends_on": "bom",
    "fieldname": "items",
    "fieldtype": "Table",
    "label": "Items",
-   "options": "BOM Record Item"
+   "options": "BOM Record Item",
+   "read_only_depends_on": "eval:doc.__islocal == 1"
   },
   {
    "default": "0",
+   "depends_on": "bom",
    "fetch_from": "bom.is_active",
    "fieldname": "is_active",
    "fieldtype": "Check",
@@ -35,6 +40,7 @@
   },
   {
    "default": "0",
+   "depends_on": "bom",
    "fetch_from": "bom.is_default",
    "fieldname": "is_default",
    "fieldtype": "Check",
@@ -51,9 +57,8 @@
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2023-02-08 16:23:37.059345",
+ "modified": "2023-02-16 12:18:32.215113",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "BOM Record",
