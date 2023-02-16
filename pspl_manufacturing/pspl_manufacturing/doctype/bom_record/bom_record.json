@@ -8,6 +8,9 @@
  "engine": "InnoDB",
  "field_order": [
   "bom",
+  "column_break_2",
+  "in_house_costing",
+  "section_break_4",
   "items",
   "is_active",
   "is_default",
@@ -54,11 +57,25 @@
    "options": "BOM Record",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "depends_on": "bom",
+   "fieldname": "in_house_costing",
+   "fieldtype": "Float",
+   "label": "In House Costing"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_4",
+   "fieldtype": "Section Break"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2023-02-16 12:18:32.215113",
+ "modified": "2023-02-16 13:48:13.701311",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "BOM Record",

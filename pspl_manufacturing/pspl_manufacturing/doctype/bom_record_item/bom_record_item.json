@@ -13,7 +13,6 @@
   "qty",
   "rate",
   "parent_bom",
-  "cost",
   "section_break_8",
   "bom_no",
   "column_break_10",
@@ -90,17 +89,12 @@
   {
    "fieldname": "column_break_10",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "cost",
-   "fieldtype": "Float",
-   "label": "cost"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2023-02-16 12:36:15.292344",
+ "modified": "2023-02-16 13:46:43.412398",
  "modified_by": "Administrator",
  "module": "PSPL Manufacturing",
  "name": "BOM Record Item",

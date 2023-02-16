@@ -8,6 +8,13 @@ def execute(filters=None):
 	columns, data = [], []
 	columns = get_columns()
 	get_data(filters, data)
+	in_house_costing = frappe.db.get_value('BOM Record', filters.bom_record, 'in_house_costing')
+	data.append(
+		{
+			"item_code": 'In House Costing',
+			"costing": in_house_costing
+		}
+	)
 	return columns, data
 
 
@@ -56,10 +63,8 @@ def get_exploded_items(bom, parent, data, flag, bom_level):
 			else:
 				if frappe.db.get_value('Item', i.item_code, 'method_of_procurement') == 'Manufacture':
 					i.costing = round(frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c') * i.qty, 2)
-				elif frappe.db.get_value('Item', i.item_code, 'method_of_procurement') == 'Purchase':
-					i.costing = round(frappe.db.get_value('Item', i.item_code, 'last_purchase_rate') * i.qty, 2)
 				else:
-					i.costing = i.cost
+					i.costing = round(frappe.db.get_value('Item', i.item_code, 'last_purchase_rate') * i.qty, 2)
 		else:
 			i.costing = 0
 		data.append(i)
