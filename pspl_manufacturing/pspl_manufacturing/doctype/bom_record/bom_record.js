@@ -11,6 +11,13 @@ frappe.ui.form.on('BOM Record', {
                 ]
             }
         }
+        frm.set_query('bom', function() {
+			return {
+				'filters': {
+					'is_active': ['=', 1]
+				}
+			};
+		});
         if(!frm.doc.__islocal){
             frm.add_custom_button(__('PSPL BOM Explorer'), function() {
                 frappe.route_options = {
@@ -29,10 +36,10 @@ frappe.ui.form.on('BOM Record Item', {
 		var refresh_flag;
         frappe.call({
             async:false,
-            method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.chk_bom_change_status',
+            method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.check_bom_status',
             args:{
 				//passing item doctype name and item bom
-                item_name : child.name,
+                child_table_name : child.name,
                 bom_no : child.bom_no
             },
             callback:(r) => {
@@ -44,12 +51,12 @@ frappe.ui.form.on('BOM Record Item', {
         if(delete_items_flag == true){
             frappe.call({
                 async:false,
-                method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.delete_items_based_on_new_bom',
+                method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.delete_by_new_bom',
                 args:{
-                    item_name : child.name,
+                    child_table_name : child.name,
                     item_code : child.item_code,
                     bom_no : child.bom_no,
-                    docname : frm.doc.name,
+                    parent_table_name : frm.doc.name,
                     idx : child.idx,
                     bom_level : child.bom_level
                 },
@@ -63,12 +70,12 @@ frappe.ui.form.on('BOM Record Item', {
         if(add_items_flag == true){
             frappe.call({
                 async:false,
-                method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.add_items_based_on_new_bom',
+                method: 'pspl_manufacturing.pspl_manufacturing.doctype.bom_record.bom_record.add_by_new_bom',
                 args:{
-                    item_name : child.name,
+                    child_table_name : child.name,
                     item_code : child.item_code,
                     bom_no : child.bom_no,
-                    docname : frm.doc.name,
+                    parent_table_name : frm.doc.name,
                     idx : child.idx,
                     bom_level : child.bom_level
                 },

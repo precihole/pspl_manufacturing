@@ -17,7 +17,7 @@
    "fieldname": "bom_level",
    "fieldtype": "Select",
    "in_list_view": 1,
-   "label": "bom level",
+   "label": "BOM Level",
    "options": "\n0\n1\n2",
    "reqd": 1
   },

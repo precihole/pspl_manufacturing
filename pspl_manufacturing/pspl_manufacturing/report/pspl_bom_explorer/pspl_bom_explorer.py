@@ -20,7 +20,8 @@ def execute(filters=None):
 
 def get_data(filters, data):
 	bom = frappe.db.get_value('BOM Record', filters.bom_record, 'bom')
-	get_exploded_items(bom, filters.bom_record, data, flag= 1, bom_level = 0)
+	if bom:
+		get_exploded_items(bom, filters.bom_record, data, flag= 1, bom_level = 0)
 
 
 def get_exploded_items(bom, parent, data, flag, bom_level):
@@ -40,39 +41,40 @@ def get_exploded_items(bom, parent, data, flag, bom_level):
 			order_by = 'idx asc',
 			group_by='item_code'
 		)
-	costing = 0	
-	for i in bom_items:
-		item_dict = frappe.db.get_value('Item', i.item_code, ['last_purchase_rate', 'min_order_qty', 'lead_time_days', 'safety_stock', 'stock_uom', 'item_group', 'method_of_procurement', 'manufacturing_cost_c'], as_dict=1)
-		i.last_purchase_rate = item_dict.last_purchase_rate
-		i.min_order_qty = item_dict.min_order_qty
-		i.lead_time_days = item_dict.lead_time_days
-		i.safety_stock = item_dict.safety_stock
-		i.uom = item_dict.stock_uom
-		i.item_group = item_dict.item_group
-		i.method_of_procurement = item_dict.method_of_procurement
-		i.manufacturing_cost_c = item_dict.manufacturing_cost_c
+	costing = 0
+	for item in bom_items:
+		item_dict = frappe.db.get_value('Item', item.item_code, ['last_purchase_rate', 'min_order_qty', 'lead_time_days', 'safety_stock', 'stock_uom', 'item_group', 'method_of_procurement', 'manufacturing_cost_c'], as_dict=1)
+		item.last_purchase_rate = item_dict.last_purchase_rate
+		item.min_order_qty = item_dict.min_order_qty
+		item.lead_time_days = item_dict.lead_time_days
+		item.safety_stock = item_dict.safety_stock
+		item.uom = item_dict.stock_uom
+		item.item_group = item_dict.item_group
+		item.method_of_procurement = item_dict.method_of_procurement
+		item.manufacturing_cost_c = item_dict.manufacturing_cost_c
+		item.suppliers = get_suppliers_for_item(item.item_code)
 
-		i.suppliers = fetch_all_supplier(i.item_code)
-		if frappe.db.get_value("Has Role",{"role":'Purchase Manager', 'parent':frappe.session.user}, 'role') == 'Purchase Manager':
-			if i.bom_no and (i.item_group == "Manufactured Components" and i.method_of_procurement == 'Manufacture'):
-				costing = calculate_bom_cost(parent, i.bom_no)
-				i.costing = round(costing * i.qty, 2)
-			elif i.bom_no and i.item_group == "Sub-assembly":
-				costing = calculate_bom_cost(parent, i.bom_no)
-				i.costing = round(costing * i.qty, 2)
+		if frappe.db.get_value("Has Role",{"role":'Purchase Manager', 'parent': frappe.session.user}, 'role') == 'Purchase Manager':
+			#method_of_procurement is custom field in item
+			if item.bom_no and (item.item_group == "Manufactured Components" and item.method_of_procurement == 'Manufacture'):
+				costing = calculate_item_cost(parent, item.bom_no)
+				item.costing = round(costing * item.qty, 2)
+			elif item.bom_no and item.item_group == "Sub-assembly":
+				costing = calculate_item_cost(parent, item.bom_no)
+				item.costing = round(costing * item.qty, 2)
 			else:
-				if frappe.db.get_value('Item', i.item_code, 'method_of_procurement') == 'Manufacture':
-					i.costing = round(frappe.db.get_value('Item', i.item_code, 'manufacturing_cost_c') * i.qty, 2)
+				if frappe.db.get_value('Item', item.item_code, 'method_of_procurement') == 'Manufacture':
+					#manufacturing_cost_c is custom field in item
+					item.costing = round(frappe.db.get_value('Item', item.item_code, 'manufacturing_cost_c') * item.qty, 2)
 				else:
-					i.costing = round(frappe.db.get_value('Item', i.item_code, 'last_purchase_rate') * i.qty, 2)
+					item.costing = round(frappe.db.get_value('Item', item.item_code, 'last_purchase_rate') * item.qty, 2)
 		else:
-			i.costing = 0
-		data.append(i)
-		if i.bom_no:
-			get_exploded_items(i.bom_no, parent, data, flag = 0, bom_level = i.bom_level)
+			item.costing = 0
+		data.append(item)
+		if item.bom_no:
+			get_exploded_items(item.bom_no, parent, data, flag = 0, bom_level = item.bom_level)
 
-def fetch_all_supplier(item_code):
-	#unique supplier
+def get_suppliers_for_item(item_code):
 	all_supplier = []
 	unique_supplier = []
 	supplier_string = ""
@@ -85,18 +87,17 @@ def fetch_all_supplier(item_code):
 		group_by= 'parent'
 	)
 	for po in purchase_orders:
-		supplier = frappe.db.get_value('Purchase Order',po.parent,'supplier')
+		supplier = frappe.db.get_value('Purchase Order', po.parent, 'supplier')
 		all_supplier.append(supplier)
-	#remove duplicate supplier
+
 	for ven in all_supplier:
 		if ven not in unique_supplier:
 			unique_supplier.append(ven)
-	#convert array to string
-	supplier_string = ','.join(unique_supplier)
+
+	supplier_string = ', '.join(unique_supplier)
 	return supplier_string
 
-def calculate_bom_cost(parent, parent_bom):
-
+def calculate_item_cost(parent, parent_bom):
 	bom_record_items = frappe.get_all(
 		"BOM Record Item",
 		{"parent_bom": parent_bom, "parent": parent},
@@ -104,21 +105,17 @@ def calculate_bom_cost(parent, parent_bom):
 		order_by = 'idx asc',
 		group_by='item_code'
 	)
-
 	cost = 0
 	rm_cost = 0
 	for row in bom_record_items:
 		item_group = frappe.db.get_value('Item', row.item_code, 'item_group')
 		mop = frappe.db.get_value('Item', row.item_code, 'method_of_procurement')
-
-		#cost logic
 		if (row.bom_no and item_group == "Sub-assembly") or (row.bom_no and item_group == "Manufactured Components" and mop == "Manufacture"):
-			rm_cost = calculate_bom_cost(parent, row.bom_no)
+			rm_cost = calculate_item_cost(parent, row.bom_no)
 			cost = cost + rm_cost
 		elif row.bom_no:
-			rm_cost = calculate_bom_cost(parent, row.bom_no)
+			rm_cost = calculate_item_cost(parent, row.bom_no)
 			cost = cost + rm_cost
-			
 			if frappe.db.get_value('Item', row.item_code, 'method_of_procurement') == 'Manufacture':
 				rm_cost = frappe.db.get_value('Item', row.item_code, 'manufacturing_cost_c')
 				rm_cost = round(rm_cost * row.qty, 2)
@@ -136,7 +133,6 @@ def calculate_bom_cost(parent, parent_bom):
 				rm_cost = frappe.db.get_value('Item', row.item_code, 'last_purchase_rate')
 				rm_cost = round(rm_cost * row.qty, 2)
 				cost = cost + rm_cost
-		#end cost logic
 	return cost
 
 def get_columns():
